@@ -1,25 +1,34 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+	var playerSide, computerSide;
+	function reset(){
+
+	}
 	function hideSelector(){
 
 	}
 	function showSelector(){
 
 	}
-	function playerSelectsX(){
+	function playerSelectsSide(side){
+		$("#playerX").attr("disabled","disabled");
+		$("#playerO").attr("disabled","disabled");
 		$("#playerSelector").addClass("animated fadeOut");
-		setTimeout(function(){
+		$("#selectorText").addClass("animated fadeOut");
+	var selectorTimeout = window.setTimeout(function(){
+			$("#selectorArea").append("<button class = 'animated fadeIn btn btn-secondary btn-lg center-block' id='resetButton'>Reset Game</button>");
+			$("#selectorText").css("visibility","hidden");	
 			$("#playerSelector").hide();
-		},1000); 
-	}
+	},1000);
 
-	function playerSelectsO(){
 
 	}
 
 	$("#playerX").on("click",function(){
-		playerSelectsX();
+		console.log("player x clicked!")
+		playerSelectsSide("X");
 	});
 	$("#playerO").on("click",function(){
-		playerSelectsO();
+		console.log ("player O clicked!")
+		playerSelectsSide("O");
 	});
 });
