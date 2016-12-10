@@ -16,17 +16,30 @@ h5{
 }
 .boxes-left{
 	background-color: white;
-	position: relative;
-	height: 30%;
-	right: 77%;
+	position: absolute;
+	height: 100px;
+	width: 100px;
 }
 .boxes-center{
 	background-color: white;
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	right: 35%;
 }
 .boxes-right{
+	background-color: white;
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	right: 4%;
+}
+.boxes-left{
 	background-color: white;
 }
 
 .white-background{
 	background-color: white;
+	border:15px;
+	border-color: black;
 }
