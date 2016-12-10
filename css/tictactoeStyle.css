@@ -1,0 +1,32 @@
+body{
+	background-color: black;
+	color: white;
+	font-family: 'Titillium Web', sans-serif;
+	font-weight: 300;
+}
+h5{
+	color:black;
+}
+.btn{
+	color: black;
+}
+.btn:hover, target, active, focus{
+	background-color: #4a4d51;
+	color: white;
+}
+.boxes-left{
+	background-color: white;
+	position: relative;
+	height: 30%;
+	right: 77%;
+}
+.boxes-center{
+	background-color: white;
+}
+.boxes-right{
+	background-color: white;
+}
+
+.white-background{
+	background-color: white;
+}
