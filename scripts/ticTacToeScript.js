@@ -4,8 +4,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function reset(){
 		$("#resetButton").attr("disabled","disabled");
 		$("#resetButton").addClass("animated fadeOut");
+		$("#playerSelector").removeClass("animated fadeOut");
+		$("#selectorText").removeClass("animated fadeOut");
+		$("#playerSelector").css("visibility","visible");
+		$("#selectorText").css("visibility","visible");
+		$("#playerSelector").addClass("animated fadeIn");
+		$("#selectorText").addClass("animated fadeIn");
 		var resetTimeout = window.setTimeout(function(){
-			$("#resetButton").hide();
+			$("#resetButton").css("visibility","hidden");
 		},1000);
 		if(selectorVisible){
 
@@ -19,11 +25,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		$("#playerO").attr("disabled","disabled");
 		$("#playerSelector").addClass("animated fadeOut");
 		$("#selectorText").addClass("animated fadeOut");
+		$("resetButton").css("visibility","visible")
+		$("#resetButton").addClass("animated fadeIn")
 		var selectorTimeout = window.setTimeout(function(){
-			$("#selectorArea").append("<button class = 'animated fadeIn btn btn-secondary btn-lg center-block' id='resetButton'>Reset Game</button>");
 			$("#selectorText").css("visibility","hidden");
 			$("#playerSelector").css("visibility","hidden");	
-			$("#playerSelector").hide();
 		},1000);
 	}
 	function showSelector(){
@@ -46,4 +52,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		console.log("reset button clicked!");
 		reset();
 	});
+	$("#1").on("click",function(){
+		console.log("Quadrant 1 clicked!");
+	});
+
 });
