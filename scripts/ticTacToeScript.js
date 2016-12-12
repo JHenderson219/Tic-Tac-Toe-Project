@@ -5,7 +5,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var playerSpots = [];
 	var computerSpots = [];
 	var takenSpots = [];
-
+	var openingQuadrants = [0,2,6,8]
+	//Thanks to MDN for this function!
+	function getRandomIntInclusive(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
 	function quadrantReport(){
 		console.log("Player now has quadrants "+playerSpots.join(", "));
 		console.log("Computer has quadrants "+computerSpots.join(", "));
@@ -62,13 +68,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		enableSideButtons();
 		showSideButtonsAndText();
 	}
-
 	function hideSelector(){
 		selectorVisible=false;
 		disableSideButtons();
 		hideSideButtonsAndText();
 	}
-
 	function playerSelectsSide(side){
 		hideSelector();
 		playerSide = side;
@@ -79,13 +83,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 		startGame();
 	}
+
 	function startGame(){
 		console.log("Game Started! Player side is "+playerSide+" and computer side is "+computerSide);
+		var openingMove = openingQuadrants[getRandomIntInclusive(0,3)]; 
 		var startTimeout = window.setTimeout(function(){ //TODO: Change this to randomly select a corner.
-		$("#2").removeClass("animated fadeOut");
-		$("#2").empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>")
+		$("#"+openingMove).removeClass("animated fadeOut");
+		$("#"+openingMove).empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>")
 		},1000);
-		computerSpots.push(2);
+		computerSpots.push(openingMove);
 		console.log("Initial Move! Computer now has quadrant "+computerSpots.join(", "));
 		updateTakenSpots();
 		isPlayerTurn=true;
