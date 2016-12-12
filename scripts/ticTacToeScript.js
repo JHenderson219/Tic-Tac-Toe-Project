@@ -1,32 +1,38 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+	/*Sector Guide
+		Sector are zer*/
 	var playerSide, computerSide;
 	var isPlayerTurn = false; 
 	var selectorVisible=true;
 	var playerSpots = [];
 	var computerSpots = [];
 	var takenSpots = [];
-	var openingQuadrants = [0,2,6,8]
-	//Thanks to MDN for this function!
+	var openingSectors = [0,2,6,8]
+	//Thanks to MDN for this function! Gets a random number between min and max, inclusive.
 	function getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-	function quadrantReport(){
-		console.log("Player now has quadrants "+playerSpots.join(", "));
-		console.log("Computer has quadrants "+computerSpots.join(", "));
+	//Logs arrays of currently occupied sectors.
+	function sectorReport(){
+		console.log("Player now has sectors "+playerSpots.join(", "));
+		console.log("Computer has sectors "+computerSpots.join(", "));
 		console.log("All taken spots are "+takenSpots);
 	}
+	//Update variable that tracks occupied sectors, takenSpots
 	function updateTakenSpots(){
 		takenSpots= playerSpots.concat(computerSpots).sort(function(a,b){
 			return a-b;
 		});
 	}
+	//clears the visable board back to vertical pipes (|)
 	function clearBoard(){
 		for(var i=0;i<9;i++){
 		$("#"+i).empty().append("<h1 class='text-center'>|</h1>").addClass("animated fadeIn");
 		}
 	}
+	//Resets all variables to their initial settings
 	function initialVariableSettings(){
 		isPlayerTurn=false;
 		selectorVisible=true;
@@ -35,10 +41,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		playerSpots=[];
 		computerSpots=[];
 	}
+	//Enables buttons that allows player to choose X or O.
 	function enableSideButtons(){
 		$("#playerX").prop("disabled",false);
 		$("#playerO").prop("disabled",false);
 	}
+	//Reveals buttons and text that allow player to choose X or O.
 	function showSideButtonsAndText(){
 		$("#playerSelector").removeClass("animated fadeOut");
 		$("#selectorText").removeClass("animated fadeOut");
@@ -47,10 +55,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		$("#playerSelector").addClass("animated fadeIn");
 		$("#selectorText").addClass("animated fadeIn");
 	}
+	//Disables buttons that allows player to choose X or O.
 	function disableSideButtons(){
 		$("#playerX").prop("disabled","disabled");
 		$("#playerO").prop("disabled","disabled");
 	}
+	//Hides buttons and text that allow player to choose X or O.
 	function hideSideButtonsAndText(){
 		$("#playerSelector").addClass("animated fadeOut");
 		$("#selectorText").addClass("animated fadeOut");
@@ -59,20 +69,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			$("#playerSelector").css("visibility","hidden");	
 		},1000);
 	}
+	//Resets the whole game.
 	function reset(){
 		selectorVisible=true;
 		initialVariableSettings();
 		updateTakenSpots();
 		clearBoard();
-		quadrantReport();
+		sectorReport();
 		enableSideButtons();
 		showSideButtonsAndText();
 	}
+	//Hides the selector section (side-choosing button and text above it)
 	function hideSelector(){
 		selectorVisible=false;
 		disableSideButtons();
 		hideSideButtonsAndText();
 	}
+	//Defines player and computer sides
 	function playerSelectsSide(side){
 		hideSelector();
 		playerSide = side;
@@ -83,11 +96,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		}
 		startGame();
 	}
-
+	//Starts the game and has computer perform initial move
 	function startGame(){
 		console.log("Game Started! Player side is "+playerSide+" and computer side is "+computerSide);
-		var openingMove = openingQuadrants[getRandomIntInclusive(0,3)]; 
-		var startTimeout = window.setTimeout(function(){ //TODO: Change this to randomly select a corner.
+		var openingMove = openingSectors[getRandomIntInclusive(0,3)]; 
+		var startTimeout = window.setTimeout(function(){
 		$("#"+openingMove).removeClass("animated fadeOut");
 		$("#"+openingMove).empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>")
 		},1000);
@@ -96,31 +109,54 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		isPlayerTurn=true;
 	}
-	function playerTurn(quadrant){
-		console.log("Quadrant "+quadrant+" clicked! Is playerTurn? "+isPlayerTurn);
-		$("#"+quadrant).empty().removeClass("animated fadeOut").append("<h1 class='text-center animated zoomIn'>"+playerSide+"</h1>");
-		playerSpots.push(quadrant);
+	//Performs player's turn on a sector, the has computer go.
+	function takeTurn(sector, side){
+		console.log("Sector "+sector+" selected! Is player turn "+playerTurn);
+		$("#"+sector).empty().append("<h1 class='text-center animated zoomIn'>"+side+"</h1>");
+		if (side==playerSide){
+			playerSpots.push(sector);
+			updateTakenSpots();
+			sectorReport();
+			isPlayerTurn = false;
+			computerTurn();
+		} else if(side==computerSide){
+
+			isPlayerTurn=true;
+		}
+
+	}
+	function playerTurn(sector){
+		console.log("Sector "+sector+" clicked! Is playerTurn? "+isPlayerTurn);
+		$("#"+sector).empty().removeClass("animated fadeOut").append("<h1 class='text-center animated zoomIn'>"+playerSide+"</h1>");
+		playerSpots.push(sector);
 		updateTakenSpots();
-		quadrantReport();
+		sectorReport();
 		isPlayerTurn=false;
 		computerTurn();
 	}	
+	//Performs computer's turn, then allows player to go.
 	function computerTurn(){
-
+		var chosenSector = getRandomIntInclusive(0,9);
+		if(isValidMove(chosenSector)){
+			
+			isPlayerTurn=true;
+		}
+		
 	}
-	function isValidMove(quadrant){
+	//Checks if a sector has already been claimed.
+	function isValidMove(sector){
 		for(var k=0;k<takenSpots.length;k++){
-			if (takenSpots[k]==quadrant){
+			if (takenSpots[k]==sector){
 				return false;
 			}
 		}
 		return true;
 	}
-
-	function quadrantClicked(quadrant){
-		var moveValid = isValidMove(quadrant);
+	//Performs the player's turn on a clicked sector.
+	function sectorClicked(sector){
+		var moveValid = isValidMove(sector);
 		if (isPlayerTurn && moveValid){
-			playerTurn(quadrant);
+			playerTurn(sector);
 		}
 	}
 
@@ -138,33 +174,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	});
 
 	$("#0").on("click",function(){
-		quadrantClicked(0);
+		sectorClicked(0);
 	});
 	$("#1").on("click",function(){
-		quadrantClicked(1);
+		sectorClicked(1);
 	});
 	$("#2").on("click",function(){
-		quadrantClicked(2);
+		sectorClicked(2);
 	});
 	$("#3").on("click",function(){
-		quadrantClicked(3);
+		sectorClicked(3);
 	});
 	$("#4").on("click",function(){
-		quadrantClicked(4);
+		sectorClicked(4);
 	});
 	$("#5").on("click",function(){
-		quadrantClicked(5);
+		sectorClicked(5);
 	});
 	$("#6").on("click",function(){
-		quadrantClicked(6);
+		sectorClicked(6);
 	});
 	$("#7").on("click",function(){
-		quadrantClicked(7);
+		sectorClicked(7);
 	});
 	$("#8").on("click",function(){
-		quadrantClicked(8);
+		sectorClicked(8);
 	});
 	$("#9").on("click",function(){
-		quadrantClicked(9);
+		sectorClicked(9);
 	});
 });
