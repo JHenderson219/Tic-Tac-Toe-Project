@@ -1,5 +1,6 @@
 body{
-	background-color: black;
+	background-color: #383838;
+	background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
 	color: white;
 	font-family: 'Titillium Web', sans-serif;
 	font-weight: 300;
@@ -42,4 +43,7 @@ h5{
 	background-color: white;
 	border:15px;
 	border-color: black;
+}
+.hidden{
+	visibility: hidden;
 }

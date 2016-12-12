@@ -1,43 +1,60 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-	var playerSide, computerSide; 
+	var playerSide, computerSide;
+	var playerTurn = false; 
 	var selectorVisible=true;
+	
 	function reset(){
-		$("#resetButton").attr("disabled","disabled");
-		$("#resetButton").addClass("animated fadeOut");
+		playerTurn=false;
+		selectorVisible=true;
+		playerSide=undefined;
+		computerSide=undefined;
+		$("#playerX").prop("disabled",false);
+		$("#playerO").prop("disabled",false);
 		$("#playerSelector").removeClass("animated fadeOut");
 		$("#selectorText").removeClass("animated fadeOut");
 		$("#playerSelector").css("visibility","visible");
 		$("#selectorText").css("visibility","visible");
 		$("#playerSelector").addClass("animated fadeIn");
 		$("#selectorText").addClass("animated fadeIn");
-		var resetTimeout = window.setTimeout(function(){
-			$("#resetButton").css("visibility","hidden");
-		},1000);
 		if(selectorVisible){
 
 		}else{
 
 		}
 	}
+
 	function hideSelector(){
 		selectorVisible=false;
-		$("#playerX").attr("disabled","disabled");
-		$("#playerO").attr("disabled","disabled");
+		$("#playerX").prop("disabled","disabled");
+		$("#playerO").prop("disabled","disabled");
 		$("#playerSelector").addClass("animated fadeOut");
 		$("#selectorText").addClass("animated fadeOut");
-		$("resetButton").css("visibility","visible")
-		$("#resetButton").addClass("animated fadeIn")
 		var selectorTimeout = window.setTimeout(function(){
 			$("#selectorText").css("visibility","hidden");
 			$("#playerSelector").css("visibility","hidden");	
 		},1000);
 	}
-	function showSelector(){
-		selectorVisible=true;
 
-	}
 	function playerSelectsSide(side){
 		hideSelector();
+		playerSide = side;
+		if (side==="X"){
+			computerSide="O";
+		} else{
+			computerSide="X";
+		}
+		startGame();
+	}
+
+	function startGame(){
+		console.log("Game Started! Player side is "+playerSide+" and computer side is "+computerSide)
+		for(var i=0;i<10;i++){
+		$("#"+i).addClass("animated fadeOut");
+		}
+		var startTimeout = window.setTimeout(function(){
+		$("#3").removeClass("animated fadeOut");
+		$("#3").empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>")
+		},1000);
 	}
 
 	$("#playerX").on("click",function(){
@@ -52,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		console.log("reset button clicked!");
 		reset();
 	});
+
 	$("#1").on("click",function(){
 		console.log("Quadrant 1 clicked!");
 	});
