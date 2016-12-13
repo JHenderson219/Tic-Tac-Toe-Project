@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-	/*Sector Guide
-		Sector are zer*/
+	/*SECTOR GUIDE
+		Sectors are zero-indexed, and start from the top-left.
+		|  |  |		<-- This top row is (from left to right) sectors 0, 1, and 2
+		|  |  |		<-- This middle row is (from left to right) sectors 3, 4, and 5
+		|  |  |		<-- This bottom row is (from left to right) sectors 6, 7, and 8
+		*/
 	var playerSide, computerSide;
 	var isPlayerTurn = false; 
 	var selectorVisible=true;
@@ -8,17 +12,43 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var computerSpots = [];
 	var takenSpots = [];
 	var openingSectors = [0,2,6,8]
+	var victoryArr= [
+		[0,1,2] //0
+		[3,4,5] //1
+		[6,7,8] //2
+		[0,3,6] //3
+		[1,4,7] //4
+		[2,5,8] //5
+		[0,4,8] //6
+		[2,4,6] //7
+	];
+	var potentialVictArr=[0,1,4,8]
 	//Thanks to MDN for this function! Gets a random number between min and max, inclusive.
 	function getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
+
+	function checkForVictory(spotsArr, vicArr){
+
+	}
+
+	/*checkForVictory(playerSpots,victoryArr[7]){
+		var victCount=0;
+		for(var i=0;i<playerSpots.length;i++){
+			for(var j=0;j<victoryArr[7].length;j++){
+				if(victoryArr[7][j]==playerSpots[i]){
+					victCount++;
+				}
+			}
+		}
+	}*/
 	//Logs arrays of currently occupied sectors.
 	function sectorReport(){
 		console.log("Player now has sectors "+playerSpots.join(", "));
 		console.log("Computer has sectors "+computerSpots.join(", "));
-		console.log("All taken spots are "+takenSpots);
+		console.log("All taken spots are "+takenSpots.join(", "));
 	}
 	//Update variable that tracks occupied sectors, takenSpots
 	function updateTakenSpots(){
