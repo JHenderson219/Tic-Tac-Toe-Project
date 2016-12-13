@@ -109,7 +109,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		isPlayerTurn=true;
 	}
-	function checkVictory(spotsArr){}
+	function checkVictory(spotsArr,victoryArr){
+
+	}
 	//Performs player's turn on a sector, the has computer go.
 	function takeTurn(sector, side, user){
 		console.log("Sector "+sector+" selected! It is "+user+"'s turn!");
@@ -134,13 +136,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		sectorReport();
 		isPlayerTurn=false;
-		window.setTimeout(function(){
+		var computerTurnTimeout = window.setTimeout(function(){
 			computerTurn();
-		},2000);
+		},1500);
 	}	
 	//Performs computer's turn, then allows player to go.
 	function computerTurn(){
-		var chosenSector = getRandomIntInclusive(0,9);
+		var chosenSector = getRandomIntInclusive(0,8);
 		if(isValidMove(chosenSector)){
 			takeTurn(chosenSector,computerSide,"computer");
 		} else{
@@ -150,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 	//Checks if a sector has already been claimed.
 	function isValidMove(sector){
+		console.log("Current taken spots are "+takenSpots);
 		for(var k=0;k<takenSpots.length;k++){
 			if (takenSpots[k]==sector){
 				return false;
