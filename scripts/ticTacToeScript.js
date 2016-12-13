@@ -109,21 +109,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		isPlayerTurn=true;
 	}
+	function checkVictory(spotsArr){}
 	//Performs player's turn on a sector, the has computer go.
-	function takeTurn(sector, side){
-		console.log("Sector "+sector+" selected! Is player turn "+playerTurn);
+	function takeTurn(sector, side, user){
+		console.log("Sector "+sector+" selected! It is "+user+"'s turn!");
 		$("#"+sector).empty().append("<h1 class='text-center animated zoomIn'>"+side+"</h1>");
-		if (side==playerSide){
+		if (user=="player"){
 			playerSpots.push(sector);
 			updateTakenSpots();
 			sectorReport();
 			isPlayerTurn = false;
 			computerTurn();
-		} else if(side==computerSide){
-
+		} else if(user=="computer"){
+			computerSpots.push(sector);
+			updateTakenSpots();
+			sectorReport();
 			isPlayerTurn=true;
 		}
-
 	}
 	function playerTurn(sector){
 		console.log("Sector "+sector+" clicked! Is playerTurn? "+isPlayerTurn);
@@ -132,16 +134,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		sectorReport();
 		isPlayerTurn=false;
-		computerTurn();
+		window.setTimeout(function(){
+			computerTurn();
+		},2000);
 	}	
 	//Performs computer's turn, then allows player to go.
 	function computerTurn(){
 		var chosenSector = getRandomIntInclusive(0,9);
 		if(isValidMove(chosenSector)){
-			
-			isPlayerTurn=true;
+			takeTurn(chosenSector,computerSide,"computer");
+		} else{
+			console.log("Didn't select a legal move. Trying again.")
+			computerTurn();
 		}
-		
 	}
 	//Checks if a sector has already been claimed.
 	function isValidMove(sector){
