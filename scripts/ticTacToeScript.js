@@ -112,6 +112,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function checkVictory(spotsArr,victoryArr){
 
 	}
+	function showVictory(){
+
+	}
 	//Performs player's turn on a sector, the has computer go.
 	function takeTurn(sector, side, user){
 		console.log("Sector "+sector+" selected! It is "+user+"'s turn!");
