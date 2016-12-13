@@ -13,16 +13,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var takenSpots = [];
 	var openingSectors = [0,2,6,8]
 	var victoryArr= [
-		[0,1,2] //0
-		[3,4,5] //1
-		[6,7,8] //2
-		[0,3,6] //3
-		[1,4,7] //4
-		[2,5,8] //5
-		[0,4,8] //6
+		[0,1,2], //0
+		[3,4,5], //1
+		[6,7,8], //2
+		[0,3,6], //3
+		[1,4,7], //4
+		[2,5,8], //5
+		[0,4,8], //6
 		[2,4,6] //7
 	];
+	var vicRegArr = [
+		"012", //0
+		"345", //1
+		"678", //2
+		"036", //3
+		"147", //4
+		"258", //5
+		"048", //6
+		"246" //7
+	];
 	var potentialVictArr=[0,1,4,8]
+	var vicRegStr = vicRegArr.join(" ")
+	console.log(vicRegStr);
+	var victReg = new RegExp (vicRegArr.join("|"),"g")
+	console.log(victReg);
+	console.log (potentialVictArr.join(""))
+	var vict = potentialVictArr.join("").match(victReg)
+	console.log(vict);
 	//Thanks to MDN for this function! Gets a random number between min and max, inclusive.
 	function getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
