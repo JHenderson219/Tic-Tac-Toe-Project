@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 	//Displays an alert if no legal moves remain.
 	function showDraw(){
-		alet("This game is a draw!");
+		alert("This game is a draw!");
 		reset();
 	}
 	//Performs turn on a sector. Then, player or computer gets to go then has computer go.
@@ -189,12 +189,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			computerSpots.push(sector);
 			updateTakenSpots();
 			sectorReport();
+			isPlayerTurn=true;
 			if(checkForVictory(computerSpots)){
+				isPlayerTurn=false;
 				showVictory("computer");
 			} else if (checkForDraw(completeBoard)){
+				isPlayerTurn=false;
 				showDraw();
 			}
-			isPlayerTurn=true;
+			
 		}
 	}
 	//Performs computer's turn, then allows player to go.
@@ -266,6 +269,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		sectorClicked(8);
 	});
 	$("#9").on("click",function(){
+		sectorClicked(9);
+	});
+	$("#playerX").on("tap",function(){
+		console.log("player X clicked!")
+		playerSelectsSide("X");
+	});
+	$("#playerO").on("tap",function(){
+		console.log ("player O clicked!")
+		playerSelectsSide("O");
+	});
+	$("#resetButton").on("tap",function(){
+		console.log("reset button clicked!");
+		reset();
+	});
+
+	$("#0").on("tap",function(){
+		sectorClicked(0);
+	});
+	$("#1").on("tap",function(){
+		sectorClicked(1);
+	});
+	$("#2").on("tap",function(){
+		sectorClicked(2);
+	});
+	$("#3").on("tap",function(){
+		sectorClicked(3);
+	});
+	$("#4").on("tap",function(){
+		sectorClicked(4);
+	});
+	$("#5").on("tap",function(){
+		sectorClicked(5);
+	});
+	$("#6").on("tap",function(){
+		sectorClicked(6);
+	});
+	$("#7").on("tap",function(){
+		sectorClicked(7);
+	});
+	$("#8").on("tap",function(){
+		sectorClicked(8);
+	});
+	$("#9").on("tap",function(){
 		sectorClicked(9);
 	});
 });
