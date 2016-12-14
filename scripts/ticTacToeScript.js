@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function(event) {
-	/*Sector Guide
-		Sector are zer*/
+	/*SECTOR GUIDE
+		Sectors are zero-indexed, and start from the top-left.
+		|  |  |		<-- This top row is (from left to right) sectors 0, 1, and 2
+		|  |  |		<-- This middle row is (from left to right) sectors 3, 4, and 5
+		|  |  |		<-- This bottom row is (from left to right) sectors 6, 7, and 8
+		*/
 	var playerSide, computerSide;
 	var isPlayerTurn = false; 
 	var selectorVisible=true;
@@ -8,6 +12,40 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var computerSpots = [];
 	var takenSpots = [];
 	var openingSectors = [0,2,6,8]
+	var victoryArr= [
+		[0,1,2], //0
+		[3,4,5], //1
+		[6,7,8], //2
+		[0,3,6], //3
+		[1,4,7], //4
+		[2,5,8], //5
+		[0,4,8], //6
+		[2,4,6] //7
+	];
+	var vicRegArr = [
+		"[012]", //0
+		"[345]", //1
+		"[678]", //2
+		"[036]", //3
+		"[147]", //4
+		"[258]", //5
+		"[048]", //6
+		"[246]" //7
+	];
+	/*var potentialVictArr=[0,1,4,8]
+	var vicRegStr = vicRegArr.join(" ")
+	//console.log(vicRegStr);
+	for(var m=0;m<vicRegArr.length;m++){
+	var victReg = new RegExp (vicRegArr[m],"g")
+	console.log("m is "+m+" and victReg is "+victReg);
+	console.log ("potentialictArr is "+potentialVictArr.join(""))
+	var vict = potentialVictArr.join("").match(victReg)	
+	console.log("vict is "+vict);
+	console.log("victoryArr is "+victoryArr[m]);
+	console.log("are vict and curret vict cond the same? "+ (vict.join("")==victoryArr[m].join("")))
+	}*/
+
+
 	//Thanks to MDN for this function! Gets a random number between min and max, inclusive.
 	function getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
@@ -18,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function sectorReport(){
 		console.log("Player now has sectors "+playerSpots.join(", "));
 		console.log("Computer has sectors "+computerSpots.join(", "));
-		console.log("All taken spots are "+takenSpots);
+		console.log("All taken spots are "+takenSpots.join(", "));
 	}
 	//Update variable that tracks occupied sectors, takenSpots
 	function updateTakenSpots(){
@@ -109,10 +147,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		isPlayerTurn=true;
 	}
-	function checkVictory(spotsArr,victoryArr){
-
+	function checkForVictory(spotsArr){
+		for(var m=0;m<vicRegArr.length;m++){
+			var victReg = new RegExp (vicRegArr[m],"g");
+			console.log("m is "+m+" and victReg is "+victReg);
+			console.log("Potential Victory array is "+spotsArr);
+			var victQuery = spotsArr.sort(function(a,b){return a-b;}).join("").match(victReg);
+			if(victQuery){
+			console.log("victQuery is "+victQuery);
+			console.log("Current true victory array is "+victoryArr[m]);
+			console.log("Are victQuery and current victory array the same? "+(victQuery.join("")==victoryArr[m].join("")));
+			if (victQuery.join("")==victoryArr[m].join("")){
+				return true;
+				}
+			}
+		}
+		return false;
 	}
-	//Performs player's turn on a sector, the has computer go.
+	function showVictory(user){
+		alert(user+" has won!");
+		reset();
+	}
+	//Performs turn on a sector. Then, player or computer gets to go then has computer go.
 	function takeTurn(sector, side, user){
 		console.log("Sector "+sector+" selected! It is "+user+"'s turn!");
 		$("#"+sector).empty().append("<h1 class='text-center animated zoomIn'>"+side+"</h1>");
@@ -120,26 +176,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			playerSpots.push(sector);
 			updateTakenSpots();
 			sectorReport();
+			if (checkForVictory(playerSpots)){
+			window.setTimeout(function(){
+				showVictory("player");
+				},50);
+			}
 			isPlayerTurn = false;
-			computerTurn();
+			window.setTimeout(function(){
+				computerTurn();
+			},500);
 		} else if(user=="computer"){
 			computerSpots.push(sector);
 			updateTakenSpots();
 			sectorReport();
+			if(checkForVictory(computerSpots)){
+				showVictory("computer");
+			}
 			isPlayerTurn=true;
 		}
 	}
-	function playerTurn(sector){
+	/*function playerTurn(sector){
 		console.log("Sector "+sector+" clicked! Is playerTurn? "+isPlayerTurn);
 		$("#"+sector).empty().removeClass("animated fadeOut").append("<h1 class='text-center animated zoomIn'>"+playerSide+"</h1>");
 		playerSpots.push(sector);
 		updateTakenSpots();
 		sectorReport();
+		if (checkForVictory(playerSpots)){
+			showVictory("player");
+		}
 		isPlayerTurn=false;
 		var computerTurnTimeout = window.setTimeout(function(){
 			computerTurn();
 		},1500);
-	}	
+	}*/	
 	//Performs computer's turn, then allows player to go.
 	function computerTurn(){
 		var chosenSector = getRandomIntInclusive(0,8);
@@ -164,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function sectorClicked(sector){
 		var moveValid = isValidMove(sector);
 		if (isPlayerTurn && moveValid){
-			playerTurn(sector);
+			takeTurn(sector,playerSide,"player");
 		}
 	}
 
