@@ -150,15 +150,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function checkForVictory(spotsArr){
 		for(var m=0;m<vicRegArr.length;m++){
 			var victReg = new RegExp (vicRegArr[m],"g");
-			console.log("m is "+m+" and victReg is "+victReg);
-			console.log("Potential Victory array is "+spotsArr);
 			var victQuery = spotsArr.sort(function(a,b){return a-b;}).join("").match(victReg);
 			if(victQuery){
-			console.log("victQuery is "+victQuery);
-			console.log("Current true victory array is "+victoryArr[m]);
-			console.log("Are victQuery and current victory array the same? "+(victQuery.join("")==victoryArr[m].join("")));
-			if (victQuery.join("")==victoryArr[m].join("")){
-				return true;
+				if (victQuery.join("")==victoryArr[m].join("")){
+					return true;
 				}
 			}
 		}
@@ -177,14 +172,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			updateTakenSpots();
 			sectorReport();
 			if (checkForVictory(playerSpots)){
-			window.setTimeout(function(){
-				showVictory("player");
-				},50);
-			}
+				window.setTimeout(function(){
+					showVictory("player");
+				},10);
+			} else{
 			isPlayerTurn = false;
-			window.setTimeout(function(){
-				computerTurn();
-			},500);
+				window.setTimeout(function(){
+					computerTurn();
+				},500);
+			}
 		} else if(user=="computer"){
 			computerSpots.push(sector);
 			updateTakenSpots();
