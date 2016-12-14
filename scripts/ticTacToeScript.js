@@ -11,7 +11,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var playerSpots = [];
 	var computerSpots = [];
 	var takenSpots = [];
-	var openingSectors = [0,2,6,8]
+	var openingSectors = [0,2,6,8];
+	var completeBoard=[0,1,2,3,4,5,6,7,8];
 	var victoryArr= [
 		[0,1,2], //0
 		[3,4,5], //1
@@ -32,19 +33,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		"[048]", //6
 		"[246]" //7
 	];
-	/*var potentialVictArr=[0,1,4,8]
-	var vicRegStr = vicRegArr.join(" ")
-	//console.log(vicRegStr);
-	for(var m=0;m<vicRegArr.length;m++){
-	var victReg = new RegExp (vicRegArr[m],"g")
-	console.log("m is "+m+" and victReg is "+victReg);
-	console.log ("potentialictArr is "+potentialVictArr.join(""))
-	var vict = potentialVictArr.join("").match(victReg)	
-	console.log("vict is "+vict);
-	console.log("victoryArr is "+victoryArr[m]);
-	console.log("are vict and curret vict cond the same? "+ (vict.join("")==victoryArr[m].join("")))
-	}*/
-
 
 	//Thanks to MDN for this function! Gets a random number between min and max, inclusive.
 	function getRandomIntInclusive(min, max) {
@@ -147,25 +135,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		updateTakenSpots();
 		isPlayerTurn=true;
 	}
+	//Checks to see if player or computer have a winning set of sectors.
 	function checkForVictory(spotsArr){
 		for(var m=0;m<vicRegArr.length;m++){
 			var victReg = new RegExp (vicRegArr[m],"g");
-			console.log("m is "+m+" and victReg is "+victReg);
-			console.log("Potential Victory array is "+spotsArr);
 			var victQuery = spotsArr.sort(function(a,b){return a-b;}).join("").match(victReg);
 			if(victQuery){
-			console.log("victQuery is "+victQuery);
-			console.log("Current true victory array is "+victoryArr[m]);
-			console.log("Are victQuery and current victory array the same? "+(victQuery.join("")==victoryArr[m].join("")));
-			if (victQuery.join("")==victoryArr[m].join("")){
-				return true;
+				if (victQuery.join("")==victoryArr[m].join("")){
+					return true;
 				}
 			}
 		}
 		return false;
 	}
+	//Displays an alert if player or computer have won, then resets the game.
 	function showVictory(user){
 		alert(user+" has won!");
+		reset();
+	}
+	//Checks to see if any legal moves remain.
+	function checkForDraw(completeBoardArr){
+		if (completeBoard.join("")===takenSpots.join("")){
+			return true;
+		}
+		return false;
+	}
+	//Displays an alert if no legal moves remain.
+	function showDraw(){
+		alert("This game is a draw!");
 		reset();
 	}
 	//Performs turn on a sector. Then, player or computer gets to go then has computer go.
@@ -177,38 +174,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			updateTakenSpots();
 			sectorReport();
 			if (checkForVictory(playerSpots)){
-			window.setTimeout(function(){
-				showVictory("player");
-				},50);
+				window.setTimeout(function(){
+					showVictory("player");
+				},10);
+			} else if (checkForDraw(completeBoard)){
+				showDraw();
+			}else{
+				isPlayerTurn = false;
+				window.setTimeout(function(){
+					computerTurn();
+				},500);
 			}
-			isPlayerTurn = false;
-			window.setTimeout(function(){
-				computerTurn();
-			},500);
 		} else if(user=="computer"){
 			computerSpots.push(sector);
 			updateTakenSpots();
 			sectorReport();
-			if(checkForVictory(computerSpots)){
-				showVictory("computer");
-			}
 			isPlayerTurn=true;
+			if(checkForVictory(computerSpots)){
+				isPlayerTurn=false;
+				showVictory("computer");
+			} else if (checkForDraw(completeBoard)){
+				isPlayerTurn=false;
+				showDraw();
+			}
+			
 		}
 	}
-	/*function playerTurn(sector){
-		console.log("Sector "+sector+" clicked! Is playerTurn? "+isPlayerTurn);
-		$("#"+sector).empty().removeClass("animated fadeOut").append("<h1 class='text-center animated zoomIn'>"+playerSide+"</h1>");
-		playerSpots.push(sector);
-		updateTakenSpots();
-		sectorReport();
-		if (checkForVictory(playerSpots)){
-			showVictory("player");
-		}
-		isPlayerTurn=false;
-		var computerTurnTimeout = window.setTimeout(function(){
-			computerTurn();
-		},1500);
-	}*/	
 	//Performs computer's turn, then allows player to go.
 	function computerTurn(){
 		var chosenSector = getRandomIntInclusive(0,8);
@@ -278,6 +269,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		sectorClicked(8);
 	});
 	$("#9").on("click",function(){
+		sectorClicked(9);
+	});
+	$("#playerX").on("tap",function(){
+		console.log("player X clicked!")
+		playerSelectsSide("X");
+	});
+	$("#playerO").on("tap",function(){
+		console.log ("player O clicked!")
+		playerSelectsSide("O");
+	});
+	$("#resetButton").on("tap",function(){
+		console.log("reset button clicked!");
+		reset();
+	});
+
+	$("#0").on("tap",function(){
+		sectorClicked(0);
+	});
+	$("#1").on("tap",function(){
+		sectorClicked(1);
+	});
+	$("#2").on("tap",function(){
+		sectorClicked(2);
+	});
+	$("#3").on("tap",function(){
+		sectorClicked(3);
+	});
+	$("#4").on("tap",function(){
+		sectorClicked(4);
+	});
+	$("#5").on("tap",function(){
+		sectorClicked(5);
+	});
+	$("#6").on("tap",function(){
+		sectorClicked(6);
+	});
+	$("#7").on("tap",function(){
+		sectorClicked(7);
+	});
+	$("#8").on("tap",function(){
+		sectorClicked(8);
+	});
+	$("#9").on("tap",function(){
 		sectorClicked(9);
 	});
 });

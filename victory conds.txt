@@ -1,9 +1,23 @@
 victory conds
-159
-123
-456
-789
-357
+012
+345
+678
+036
 147
 258
-3
+048
+246
+
+
+get playerSpots or computerSpots, sorted low to high
+
+	for(var m=0;m<vicRegArr.length;m++){
+	var victReg = new RegExp (vicRegArr[m],"g") //Creates regexp for each possible win cond
+	console.log("m is "+m+" and victReg is "+victReg); //Log
+	console.log ("potentialictArr is "+potentialVictArr.join("")) //Log
+	var vict = potentialVictArr.join("").match(victReg) 
+	//merges computerSpots or playerSpots to str, compares to regexp, returns an array of matching characters. If that string is the same as the current victoryArray[m].join(""), the side has won
+	console.log("vict is "+vict);
+	console.log("victoryArr is "+victoryArr[m]);
+	console.log("are vict and curret vict cond the same? "+ (vict.join("")==victoryArr[m].join("")))
+	}
