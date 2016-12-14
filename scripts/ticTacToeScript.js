@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	//clears the visable board back to vertical pipes (|)
 	function clearBoard(){
 		for(var i=0;i<9;i++){
-		$("#"+i).empty().append("<h1 class='text-center'>|</h1>").addClass("animated fadeIn");
+			$("#"+i).empty().append("<h1 class='text-center'>|</h1>").addClass("animated fadeIn");
 		}
 	}
 	//Resets all variables to their initial settings
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function hideSideButtonsAndText(){
 		$("#playerSelector").addClass("animated fadeOut");
 		$("#selectorText").addClass("animated fadeOut");
-		var selectorTimeout = window.setTimeout(function(){
+		window.setTimeout(function(){
 			$("#selectorText").css("visibility","hidden");
 			$("#playerSelector").css("visibility","hidden");	
 		},1000);
@@ -126,9 +126,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	function startGame(){
 		console.log("Game Started! Player side is "+playerSide+" and computer side is "+computerSide);
 		var openingMove = openingSectors[getRandomIntInclusive(0,3)]; 
-		var startTimeout = window.setTimeout(function(){
-		$("#"+openingMove).removeClass("animated fadeOut");
-		$("#"+openingMove).empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>")
+		window.setTimeout(function(){
+			$("#"+openingMove).removeClass("animated fadeOut");
+			$("#"+openingMove).empty().append("<h1 class='text-center animated fadeIn'>"+computerSide+"</h1>");
 		},1000);
 		computerSpots.push(openingMove);
 		console.log("Initial Move! Computer now has quadrant "+computerSpots.join(", "));
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		if(isValidMove(chosenSector)){
 			takeTurn(chosenSector,computerSide,"computer");
 		} else{
-			console.log("Didn't select a legal move. Trying again.")
+			console.log("Didn't select a legal move. Trying again.");
 			computerTurn();
 		}
 	}
@@ -229,11 +229,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}
 
 	$("#playerX").on("click",function(){
-		console.log("player X clicked!")
+		console.log("player X clicked!");
 		playerSelectsSide("X");
 	});
 	$("#playerO").on("click",function(){
-		console.log ("player O clicked!")
+		console.log ("player O clicked!");
 		playerSelectsSide("O");
 	});
 	$("#resetButton").on("click",function(){
@@ -272,11 +272,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		sectorClicked(9);
 	});
 	$("#playerX").on("tap",function(){
-		console.log("player X clicked!")
+		console.log("player X clicked!");
 		playerSelectsSide("X");
 	});
 	$("#playerO").on("tap",function(){
-		console.log ("player O clicked!")
+		console.log ("player O clicked!");
 		playerSelectsSide("O");
 	});
 	$("#resetButton").on("tap",function(){
